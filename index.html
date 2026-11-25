@@ -1717,6 +1717,13 @@
 
   const OPAC_RAK_JUMLAH_BUKU = 12;
   const OPAC_BENTUK_KOSONG = 'Lainnya';
+  // Urutan rak "Jelajahi Berdasarkan Bentuk Karya Tulis". Bentuk yang tidak tercantum
+  // muncul sesudahnya (terbanyak dulu), "Lainnya" selalu paling akhir.
+  const OPAC_URUTAN_BENTUK = [
+    'Buku Pengetahuan', 'Novel', 'Komik', 'Cerpen', 'Puisi',
+    'Cerita Rakyat/Dongeng', 'Drama', 'Antologi', 'Biografi', 'Otobiografi', 'Esai',
+    'Ensiklopedia', 'Kamus', 'Buku Panduan', 'Buku Teks', 'Laporan Penelitian'
+  ];
   let opacEtalaseData = [];
   const opacIntervals = {};
   const opacKaroselState_ = {};
@@ -1747,10 +1754,14 @@
       if (!grup[k]) grup[k] = { bentuk: nama, buku: [] };
       grup[k].buku.push(kartuDariBuku_(b));
     });
+    const urutan = OPAC_URUTAN_BENTUK.map(function(x) { return x.toLowerCase(); });
+    const posisi = function(g) {
+      if (g.bentuk === OPAC_BENTUK_KOSONG) return 9999;
+      const i = urutan.indexOf(g.bentuk.toLowerCase());
+      return i > -1 ? i : 999;
+    };
     return Object.keys(grup).map(function(k) { return grup[k]; }).sort(function(a, b) {
-      const la = a.bentuk === OPAC_BENTUK_KOSONG, lb = b.bentuk === OPAC_BENTUK_KOSONG;
-      if (la !== lb) return la ? 1 : -1;
-      return b.buku.length - a.buku.length || a.bentuk.localeCompare(b.bentuk, 'id');
+      return posisi(a) - posisi(b) || b.buku.length - a.buku.length || a.bentuk.localeCompare(b.bentuk, 'id');
     });
   }
 

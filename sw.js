@@ -1,6 +1,6 @@
 // Service worker OPAC publik: halaman & data diambil dari jaringan dulu (selalu terbaru),
 // jika luring dipakai salinan terakhir. Aset (CSS, font, sampul) disimpan setelah dimuat.
-const CACHE = 'opac-v2';
+const CACHE = 'opac-v3';
 const INTI = ['./', './index.html', './manifest.webmanifest', './ikon-192.png', './ikon-512.png'];
 
 self.addEventListener('install', e => {
