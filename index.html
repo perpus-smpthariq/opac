@@ -1,288 +1,1970 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Katalog Perpustakaan SMPIT Thariq Bin Ziyad</title>
-<meta name="description" content="Cari buku di Perpustakaan SMPIT Thariq Bin Ziyad: judul, pengarang, subjek, ketersediaan, dan letak rak.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --kertas: #f4f7f6;      /* latar: kertas dingin, bukan krem */
-    --tinta: #1d2b2a;       /* teks utama */
-    --tinta-2: #4d5f5d;     /* teks sekunder */
-    --hijau: #0f5b53;       /* hijau rak / identitas sekolah */
-    --hijau-tua: #0a3f3a;
-    --label: #f3c94f;       /* kuning stiker label punggung buku */
-    --ada: #23814f;
-    --habis: #b0443a;
-    --garis: #d5dfdd;
-    --putih: #ffffff;
-    --r: 10px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Perpustakaan SMPIT Thariq Bin Ziyad</title>
+  <meta name="description" content="Katalog daring (OPAC) Perpustakaan SMPIT Thariq Bin Ziyad: cari judul, pengarang, atau subjek dan lihat ketersediaan buku.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+
+     
+    :root {
+      --ink: #3B2A1E;
+      --ink-2: #4A3728;
+      --ink-soft: #5C4736;
+      --paper: #F7F3EA;
+      --paper-card: #FFFFFF;
+      --brass: #A6772C;
+      --brass-light: #C99A4E;
+      --brick: #8C3B34;
+      --brick-light: #A85049;
+      --line: #D9CEB0;
+      --text: #26302C;
+      --text-muted: #6B6459;
+      --success: #3F6E52;
+      --success-light: #EAF0EA;
+
+      --font-display: 'Source Serif 4', Georgia, serif;
+      --font-body: 'Public Sans', -apple-system, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+      --border-radius: 8px;
+      --shadow: 0 2px 8px rgba(31,61,58,0.08), 0 1px 3px rgba(31,61,58,0.06);
+      --shadow-lift: 0 8px 24px rgba(31,61,58,0.14);
+    }
+
+    * {
+      font-family: var(--font-body);
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, .header-title, .card-header-custom {
+      font-family: var(--font-display);
+      letter-spacing: 0.01em;
+    }
+
+     
+    input[name="nomorPanggil"],
+    input[name="isbn"],
+    input[name="noKlasDDC"],
+    #generatedNumber {
+      font-family: var(--font-mono);
+      letter-spacing: 0.02em;
+    }
+
+     
+    .app-header {
+      background: var(--ink);
+      color: var(--paper-card);
+      padding: 18px 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 3px solid var(--brass);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .header-icon {
+      font-size: 2.1rem;
+      color: var(--brass-light);
+      animation: settle 0.6s ease-out;
+    }
+
+    @keyframes settle {
+      from { transform: translateY(-6px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .header-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 0;
+      color: #fff;
+    }
+
+    .header-subtitle {
+      font-size: 0.78rem;
+      opacity: 0.75;
+      margin: 2px 0 0;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
+
+    #currentTime {
+      font-family: var(--font-mono);
+    }
+
+     
+    .main-container {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+     
+    .custom-card {
+      background: var(--paper-card);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      margin-bottom: 22px;
+      transition: box-shadow 0.25s ease;
+    }
+
+    .custom-card:hover {
+      box-shadow: var(--shadow-lift);
+    }
+
+     
+    .panel {
+      background: var(--paper-card);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .form-section {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+
+    .form-section + .form-section {
+      border-top: 1px solid var(--line);
+    }
+
+    .card-header-custom {
+      background: transparent;
+      color: var(--text);
+      padding: 26px 32px 18px;
+      margin-bottom: 4px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-header-custom i {
+      color: var(--brass);
+      font-size: 0.95em;
+    }
+
+     
+    .custom-card .card-body,
+    .panel .card-body {
+      padding: 24px 32px 30px;
+    }
+
+    .custom-card .card-header-custom + .card-body,
+    .panel .card-header-custom + .card-body {
+      padding-top: 22px;
+    }
+
+     
+    .mini-leaderboard-table {
+      table-layout: fixed;
+    }
+    .mini-leaderboard-table td.truncate-cell {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+     
+    .scan-stage {
+      position: relative; min-height: 70vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 40px 28px; border-radius: 18px;
+      background: var(--paper-card); border: 2px solid var(--line);
+    }
+    .scan-stage[data-state="terima-kasih"] { background: #E7F3EA; border-color: #3F6E52; }
+    .scan-tampil { display: none; }
+    .scan-stage[data-state="siap"] .scan-tampil-siap { display: block; }
+    .scan-stage[data-state="terima-kasih"] .scan-tampil-terima-kasih { display: block; }
+
+    .scan-ikon { font-size: clamp(3.5rem, 9vw, 6rem); margin-bottom: 22px; color: var(--ink-soft); }
+    .scan-stage[data-state="terima-kasih"] .scan-ikon { color: #3F6E52; }
+    .scan-judul {
+      font-family: var(--font-display); font-weight: 600; margin: 0;
+      font-size: clamp(1.6rem, 4.2vw, 2.8rem); line-height: 1.3; max-width: 900px;
+    }
+    .scan-indikator {
+      position: absolute; top: 16px; left: 20px; display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; color: var(--text-muted);
+    }
+    .scan-dot { width: 10px; height: 10px; border-radius: 50%; background: #3F6E52; }
+    .scan-stage.nonaktif .scan-dot { background: var(--brick); }
+    .scan-stage.nonaktif .scan-indikator { color: var(--brick); font-weight: 600; }
+    .scan-bunyi-toggle {
+      position: absolute; top: 10px; right: 14px; background: none; border: none;
+      color: var(--text-muted); opacity: 0.55; font-size: 1rem; padding: 6px 8px;
+    }
+    .scan-bunyi-toggle:hover { opacity: 1; }
+    .scan-bunyi-toggle.mati { opacity: 0.35; }
+    .scan-diag-toggle {
+      position: absolute; top: 10px; right: 46px; background: none; border: none;
+      color: var(--text-muted); opacity: 0.4; font-size: 1rem; padding: 6px 8px;
+    }
+    .scan-diag-toggle:hover { opacity: 1; }
+    .scan-diag-toggle.bermasalah { color: var(--brick); opacity: 1; }
+    .scan-toast { transition: opacity 0.3s ease; }
+    .scan-toast.menghilang { opacity: 0; }
+    .scan-diag {
+      position: absolute; left: 16px; right: 16px; bottom: 12px; text-align: left; white-space: pre-line;
+      font: 0.72rem/1.55 ui-monospace, Menlo, Consolas, monospace; color: #5C5448;
+      background: rgba(0,0,0,0.05); border-radius: 8px; padding: 8px 12px;
+    }
+     
+    .scan-input { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; border: 0; padding: 0; }
+     
+    body.kiosk-scan .scan-stage { min-height: 94vh; }
+    body.kiosk-scan .app-content { padding: 12px; }
+
+     
+    .kartu {
+      width: 85.6mm; height: 54mm; box-sizing: border-box; overflow: hidden;
+      border: 0.25mm solid #9A8F7A;             
+      background: #fff; color: var(--text);
+      padding: 3.2mm 4.5mm 3mm; display: flex; flex-direction: column;
+      break-inside: avoid; page-break-inside: avoid;
+    }
+    .kartu-head { display: flex; align-items: center; gap: 2.5mm; padding-bottom: 1.8mm; border-bottom: 0.35mm solid var(--brass); }
+    .kartu-logo { height: 9.5mm; width: auto; max-width: 12mm; object-fit: contain; flex-shrink: 0; }
+    .kartu-judul { font-size: 6.2pt; font-weight: 700; letter-spacing: 0.12em; color: var(--brass); line-height: 1.2; }
+    .kartu-sekolah { font-size: 9pt; font-weight: 700; color: var(--ink); line-height: 1.15; }
+    .kartu-isi { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .kartu-nama {
+      margin-top: 2mm; font-family: var(--font-display); font-weight: 700; color: var(--ink);
+      line-height: 1.15; max-height: 2.4em; overflow: hidden;
+    }
+    .kartu-info { font-size: 8.5pt; color: #5C5448; margin-top: 0.6mm; }
+    .kartu-barcode-wrap { margin-top: auto; text-align: center; }
+    .kartu-barcode { display: block; height: 10.5mm; margin: 0 auto; }
+    .kartu-id { font-size: 7.5pt; letter-spacing: 0.15em; margin-top: 0.6mm; color: var(--ink); }
+    #kartuPratinjau .kartu { border-radius: 3mm; box-shadow: 0 2px 10px rgba(0,0,0,0.18); border-color: var(--line); }
+    #kartuTabelBody tr { cursor: pointer; }
+    #kartuTabelBody tr.kartu-baris-aktif > td { background: #FBF2DF; }
+
+    #printKartuArea { display: none; }
+    .kartu-halaman {
+      box-sizing: border-box; width: 100%; height: 296mm; padding-top: 13.5mm; overflow: hidden;
+      page-break-after: always; break-after: page;
+    }
+    .kartu-halaman:last-child { page-break-after: auto; break-after: auto; }
+     
+    .kartu-halaman.tunggal { width: 210mm; height: 296mm; padding: 0; position: relative; }
+    .kartu-tunggal-pos { position: absolute; }
+    .kartu-tunggal-pos.tegak { width: 54mm; height: 85.6mm; }
+    .kartu-tunggal-pos.tegak > .kartu { position: absolute; left: 0; top: 0; transform-origin: top left; transform: translateX(54mm) rotate(90deg); }
+     
+    .kartu-lipat { display: flex; width: 171.2mm; height: 54mm; flex-shrink: 0; }
+    .kartu-lipat > .kartu:first-child { border-right: none; }
+    .kartu-lipat > .kartu-belakang { border-left: 0.3mm dashed #9A8F7A; }
+    .kartu-belakang { padding: 3mm 4.2mm 2.6mm; }
+    .kartu-belakang-judul { font-size: 9pt; font-weight: 700; color: var(--ink); line-height: 1.2; padding-bottom: 1mm; margin-bottom: 1.2mm; border-bottom: 0.35mm solid var(--brass); }
+    .kartu-belakang ol { margin: 0; padding-left: 3.8mm; font-size: 6.7pt; line-height: 1.3; color: var(--text); }
+    .kartu-belakang ol li { margin-bottom: 0.25mm; }
+    .kartu-belakang-kaki { margin-top: auto; font-size: 6pt; font-style: italic; text-align: center; color: #555; line-height: 1.25; }
+    .kartu-grid.lipat { grid-template-columns: 171.2mm; }
+    .kartu-tunggal-pos.tegak.lipat { width: 54mm; height: 171.2mm; }
+    .kartu-tunggal-pos.tegak > .kartu-lipat { position: absolute; left: 0; top: 0; transform-origin: top left; transform: translateX(54mm) rotate(90deg); }
+    .kartu-pratinjau-gulir { max-width: 100%; overflow-x: auto; padding-bottom: 4px; }
+    .kartu-grid { display: grid; grid-template-columns: repeat(2, 85.6mm); grid-auto-rows: 54mm; justify-content: center; }
+    @media print {
+       
+      body.mencetak-kartu > #printKartuArea { display: block !important; width: 100%; }
+      body.mencetak-kartu > #printLabelArea { display: none !important; }
+    }
+
+     
+    .form-label {
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 5px;
+      font-size: 0.86rem;
+    }
+
+    .form-label .required {
+      color: var(--brick);
+    }
+
+    .form-control, .form-select {
+      border-radius: 6px;
+      border: 1.5px solid var(--line);
+      padding: 7px 11px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-size: 0.86rem;
+      background-color: #fff;
+      color: var(--text);
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--brass);
+      box-shadow: 0 0 0 0.18rem rgba(166, 119, 44, 0.18);
+    }
+
+     
+    .form-control.field-highlight,
+    .form-select.field-highlight {
+      background-color: #EAF3EC;
+      border-color: rgba(63, 110, 82, 0.55);
+    }
+
+    .form-control.field-highlight:focus,
+    .form-select.field-highlight:focus {
+      background-color: #fff;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+     
+    .btn-submit {
+      background: var(--ink);
+      color: #fff;
+      padding: 11px 32px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--ink);
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-submit:hover {
+      background: var(--ink-2);
+      transform: translateY(-1px);
+      color: #fff;
+    }
+
+    .btn-reset {
+      background: transparent;
+      color: var(--text-muted);
+      padding: 11px 32px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--line);
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      background: var(--paper);
+      color: var(--text);
+      border-color: var(--text-muted);
+    }
+
+    .btn-generate {
+      background: var(--brass);
+      color: #fff;
+      border-radius: 6px;
+      padding: 7px 16px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .btn-generate:hover {
+      background: var(--brass-light);
+      color: #fff;
+    }
+
+     
+    .btn-primary {
+      background-color: var(--ink); border-color: var(--ink);
+    }
+    .btn-primary:hover, .btn-primary:focus {
+      background-color: var(--ink-2); border-color: var(--ink-2);
+    }
+    .btn-success {
+      background-color: var(--success); border-color: var(--success);
+    }
+    .btn-success:hover, .btn-success:focus {
+      background-color: #345c44; border-color: #345c44;
+    }
+    .btn-danger {
+      background-color: var(--brick); border-color: var(--brick);
+    }
+    .btn-danger:hover, .btn-danger:focus {
+      background-color: var(--brick-light); border-color: var(--brick-light);
+    }
+    .btn-secondary {
+      background-color: var(--text-muted); border-color: var(--text-muted);
+    }
+    .btn-warning {
+      background-color: var(--brass); border-color: var(--brass); color: #fff;
+    }
+    .btn-warning:hover { color: #fff; background-color: var(--brass-light); border-color: var(--brass-light); }
+    .btn-outline-primary {
+      color: var(--ink); border-color: var(--ink);
+    }
+    .btn-outline-primary:hover {
+      background-color: var(--ink); border-color: var(--ink);
+    }
+
+     
+    .table-container {
+      max-height: 500px;
+      overflow-y: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--border-radius);
+    }
+
+     
+    #dataTable th:nth-child(1), #dataTable td:nth-child(1) {
+      position: sticky;
+      left: 0;
+      z-index: 6;
+      background: var(--paper-card);
+      min-width: 45px;
+    }
+    #dataTable th:nth-child(2), #dataTable td:nth-child(2) {
+      position: sticky;
+      left: 45px;
+      z-index: 6;
+      background: var(--paper-card);
+      min-width: 56px;
+    }
+    #dataTable th:nth-child(3), #dataTable td:nth-child(3) {
+      position: sticky;
+      left: 101px;
+      z-index: 6;
+      background: var(--paper-card);
+      min-width: 160px;
+      border-right: 2px solid rgba(0,0,0,0.12);  
+    }
+    #dataTable th:nth-child(1), #dataTable th:nth-child(2), #dataTable th:nth-child(3) {
+      z-index: 16;  
+      background: var(--ink);
+    }
+
+    .table th {
+      background: var(--ink);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      font-size: 0.76rem;
+      white-space: nowrap;
+      padding: 10px 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .table td {
+      font-size: 0.85rem;
+      vertical-align: middle;
+      padding: 8px;
+      border-color: var(--line);
+    }
+
+    .table tbody tr:hover {
+      background: var(--success-light);
+    }
+
+     
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .custom-toast {
+      border-radius: 8px;
+      box-shadow: var(--shadow-lift);
+      animation: slideIn 0.35s ease;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--ink);
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+     
+    .spinner-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(31,61,58,0.55);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+     
+    @media (max-width: 768px) {
+      .header-title { font-size: 1.15rem; }
+      .header-icon { font-size: 1.8rem; }
+      .card-header-custom { font-size: 0.92rem; }
+    }
+
+     
+    .badge-available {
+      background: var(--success);
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-borrowed {
+      background: var(--brick);
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+     
+    @media print {
+      body { background: white; }
+      .app-header, .btn, #input-section { display: none; }
+    }
+
+     
+    a:focus-visible, button:focus-visible, .btn:focus-visible {
+      outline: 2px solid var(--brass);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .header-icon, .custom-toast { animation: none !important; }
+    }
+
+     
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ink);
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.045) 1px, transparent 0);
+      background-size: 22px 22px;
+    }
+
+    .login-card {
+      background: var(--paper-card);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lift);
+      width: 100%;
+      max-width: 380px;
+      padding: 36px 32px;
+    }
+
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .login-logo i {
+      font-size: 1.8rem;
+      color: var(--brass);
+    }
+
+    .login-logo-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    .login-logo-sub {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .login-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 22px 0 4px;
+    }
+
+    .login-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+     
+    #appShell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--ink);
+      color: #EFE8DC;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .sidebar-logo {
+      padding: 22px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo-img {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--brass-light);
+      font-size: 1.3rem;
+    }
+
+    .sidebar-logo-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.02rem;
+      line-height: 1.15;
+      color: #fff;
+    }
+
+    .sidebar-logo-sub {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--brass-light);
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 16px 12px;
+      overflow-y: auto;
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 6px;
+      color: #D9CFBE;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 3px;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      text-decoration: none;
+    }
+
+    .sidebar-nav-item i {
+      width: 18px;
+      text-align: center;
+      color: #B5A88F;
+    }
+
+    .sidebar-nav-item:hover {
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+    }
+
+    .sidebar-nav-item.active {
+      background: var(--brass);
+      color: #fff;
+    }
+
+    .sidebar-nav-item.active i {
+      color: #fff;
+    }
+
+    .sidebar-nav-item .submenu-caret {
+      margin-left: auto;
+      font-size: 0.7rem;
+      transition: transform 0.15s;
+      color: #B5A88F;
+    }
+    .sidebar-nav-item .submenu-caret.open { transform: rotate(180deg); }
+    .sidebar-submenu { padding-left: 26px; margin-bottom: 3px; }
+    .sidebar-submenu-item {
+      display: block; width: 100%; text-align: left; background: transparent; border: none;
+      color: #D9CFBE; font-size: 0.83rem; font-weight: 500; padding: 8px 14px; border-radius: 6px;
+      cursor: pointer; margin-bottom: 2px; transition: background 0.15s, color 0.15s;
+    }
+    .sidebar-submenu-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    .sidebar-submenu-item.active { background: var(--brass); color: #fff; }
+
+    .sidebar-footer {
+      padding: 14px 20px 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--brass);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar-user-name {
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .sidebar-user-role {
+      font-size: 0.7rem;
+      color: #B5A88F;
+    }
+
+    .sidebar-logout-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #D9CFBE;
+      border-radius: 6px;
+      padding: 7px;
+      font-size: 0.78rem;
+      transition: all 0.15s;
+    }
+
+    .sidebar-logout-btn:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .app-topbar {
+      background: var(--paper-card);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+     
+    .kg-penanda { position: fixed; right: 16px; bottom: 16px; z-index: 2000; max-width: 360px; padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .kg-penanda.berjalan { background: #e8f1fb; color: #1d4f7a; border: 1px solid #9cc3e6; }
+    .kg-penanda.selesai { background: #e7f6ec; color: #1e6b3a; border: 1px solid #9fd5b1; }
+    .kg-penanda.gagal { background: #fdecea; color: #8a1c1c; border: 1px solid #e8a3a3; }
+    .penanda-trx { position: fixed; left: 16px; bottom: 16px; z-index: 2000; padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: default; }
+    .penanda-trx.berjalan { background: #fff8e1; color: #6d4c00; border: 1px solid #f0c36d; }
+    .penanda-trx.tertunda { background: #fdecea; color: #8a1c1c; border: 1px solid #e8a3a3; cursor: pointer; }
+
+     
+    .kunci-tab-sembunyi { display: none !important; }
+    .katalog-tab-bar.kunci-satu-tab, #bukuTamuTabBar.kunci-satu-tab { display: none !important; }
+    .tab-terkunci-pengatur { opacity: 0.5; text-decoration: line-through; }
+
+     
+    .sirkulasi-tab-sticky {
+      position: sticky; top: var(--tinggi-topbar, 76px); z-index: 450;
+      background: var(--paper, #f6f1e7); padding-top: 6px; margin-top: -6px;
+      box-shadow: 0 6px 8px -8px rgba(0,0,0,0.25);
+    }
+
+    .app-topbar-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .app-topbar-breadcrumb {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 2px 0 0;
+    }
+
+    .app-topbar-breadcrumb .current {
+      color: var(--brass);
+      font-weight: 600;
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .topbar-user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .topbar-user-name {
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .topbar-user-role {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+    }
+
+    .app-content {
+      flex: 1;
+      padding: 26px 28px 40px;
+      max-width: 1400px;
+    }
+
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+
+    @media (max-width: 900px) {
+      .sidebar { width: 68px; }
+      .sidebar-logo-text, .sidebar-logo-sub, .sidebar-nav-item span,
+      .sidebar-user-name, .sidebar-user-role, .sidebar-logout-btn span { display: none; }
+      .sidebar-logout-btn { padding: 7px 0; }
+    }
+
+     
+    .stat-card {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-radius: var(--border-radius);
+      padding: 20px 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow);
+    }
+    .stat-card.stat-card-clickable {
+      cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .stat-card.stat-card-clickable:hover {
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+      transform: translateY(-2px);
+    }
+
+     
+    #page-laporan {
+      font-family: 'Poppins', sans-serif;
+      --lap-blue: #2563EB;
+      --lap-blue-light: #EFF6FF;
+      --lap-border: #E5E7EB;
+      --lap-text: #1F2937;
+      color: var(--lap-text);
+    }
+    #page-laporan .lap-card {
+      background: #fff;
+      border: 1px solid var(--lap-border);
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    #page-laporan h5.lap-section-title {
+      font-weight: 600;
+      color: var(--lap-text);
+      margin-bottom: 4px;
+    }
+    #page-laporan .lap-section-sub {
+      color: #6B7280;
+      font-size: 0.85rem;
+      margin-bottom: 18px;
+    }
+    #page-laporan .form-label {
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #374151;
+    }
+    #page-laporan .form-control, #page-laporan .form-select {
+      border-radius: 10px;
+      border: 1px solid var(--lap-border);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+    }
+    #page-laporan .form-control:focus, #page-laporan .form-select:focus {
+      border-color: var(--lap-blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+    #page-laporan .btn-lap-primary {
+      background: var(--lap-blue);
+      border: none;
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 500;
+      padding: 10px 22px;
+    }
+    #page-laporan .btn-lap-primary:hover { background: #1D4ED8; color: #fff; }
+    #page-laporan .btn-lap-outline {
+      background: #fff;
+      border: 1px solid var(--lap-blue);
+      color: var(--lap-blue);
+      border-radius: 10px;
+      font-weight: 500;
+      padding: 10px 22px;
+    }
+    #page-laporan .btn-lap-outline:hover { background: var(--lap-blue-light); color: var(--lap-blue); }
+    #page-laporan .lap-readonly-stat {
+      background: var(--lap-blue-light);
+      border-radius: 10px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+    #page-laporan .lap-readonly-stat .lap-stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--lap-blue);
+    }
+    #page-laporan .lap-readonly-stat .lap-stat-label {
+      font-size: 0.78rem;
+      color: #4B5563;
+    }
+    #page-laporan .lap-readonly-stat .lap-stat-compare {
+      font-size: 0.72rem;
+      color: #6B7280;
+    }
+
+     
+    #page-laporan .lap-stepper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+    #page-laporan .lap-step {
+      flex: 1;
+      min-width: 90px;
+      text-align: center;
+      padding: 10px 4px;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: #9CA3AF;
+      background: #F9FAFB;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    #page-laporan .lap-step .lap-step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: #E5E7EB; color: #6B7280;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600; margin-bottom: 4px; font-size: 0.75rem;
+    }
+    #page-laporan .lap-step.active { background: var(--lap-blue-light); color: var(--lap-blue); border-color: var(--lap-blue); }
+    #page-laporan .lap-step.active .lap-step-num { background: var(--lap-blue); color: #fff; }
+    #page-laporan .lap-step.done .lap-step-num { background: #10B981; color: #fff; }
+    #page-laporan .lap-step-panel { display: none; }
+    #page-laporan .lap-step-panel.active { display: block; }
+
+     
+    #page-laporan .lap-foto-dropzone {
+      border: 2px dashed var(--lap-border);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      color: #6B7280;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    #page-laporan .lap-foto-dropzone.dragover { border-color: var(--lap-blue); background: var(--lap-blue-light); }
+    #page-laporan .lap-foto-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    #page-laporan .lap-foto-item { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--lap-border); }
+    #page-laporan .lap-foto-item img { width: 100%; height: 100px; object-fit: cover; display: block; }
+    #page-laporan .lap-foto-item .lap-foto-remove {
+      position: absolute; top: 4px; right: 4px;
+      background: rgba(0,0,0,0.6); color: #fff;
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.7rem; border: none;
+    }
+
+     
+    #page-laporan table.lap-table th {
+      background: var(--lap-blue-light); color: var(--lap-blue);
+      font-weight: 600; font-size: 0.8rem;
+    }
+    #page-laporan table.lap-table td, #page-laporan table.lap-table th {
+      vertical-align: middle; padding: 10px;
+    }
+
+     
+    .opac-carousel-viewport { overflow: hidden; }
+    .opac-carousel-track { display: flex; gap: 14px; transition: transform 0.6s ease; }
+     
+    .opac-carousel-track .opac-book-card { flex: 0 0 150px; }
+    @media (max-width: 576px) { .opac-carousel-track .opac-book-card { flex-basis: 128px; } }
+     
+    .opac-rak-panah.opac-karosel-panah { display: flex !important; }
+    .opac-book-card {
+      flex: 0 0 calc(20% - 11.2px);
+      cursor: pointer;
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .opac-book-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.15); transform: translateY(-2px); }
+    .opac-book-cover {
+      width: 100%; aspect-ratio: 2 / 3; height: auto; object-fit: cover;
+      border-radius: 4px; background: #f2ede2;
+    }
+    .opac-book-cover-placeholder {
+      width: 100%; aspect-ratio: 2 / 3; border-radius: 4px; background: #f2ede2;
+      display: flex; align-items: center; justify-content: center; color: #b5a88f;
+    }
+    .opac-book-title {
+      font-size: 0.85rem; font-weight: 700; margin-top: 8px;
+      height: 2.6em; overflow: hidden; line-height: 1.3;
+    }
+    .opac-book-author { font-size: 0.75rem; color: #6b6357; margin-top: 2px; height: 1.2em; overflow: hidden; }
+
+     
+    .opac-rak-wrap { position: relative; }
+    .opac-rak-viewport { overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin; padding: 2px 2px 8px; }
+    .opac-rak-track { display: flex; gap: 14px; }
+    .opac-rak-track .opac-book-card { flex: 0 0 150px; scroll-snap-align: start; }
+     
+    #opacHasilPencarian { scroll-margin-top: 100px; }
+    .opac-rak-judul .opac-rak-jumlah { font-size: 0.75rem; font-weight: 400; color: var(--text-muted); margin-left: 6px; }
+    .opac-rak-panah {
+      position: absolute; top: 38%; z-index: 2; width: 34px; height: 34px; border-radius: 50%;
+      border: 1px solid var(--line); background: #fff; color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      display: flex; align-items: center; justify-content: center; padding: 0;
+    }
+    .opac-rak-panah:hover { background: var(--paper); }
+    .opac-rak-panah.kiri { left: -10px; }
+    .opac-rak-panah.kanan { right: -10px; }
+    @media (hover: none) { .opac-rak-panah { display: none; } }    
+    @media (max-width: 576px) { .opac-rak-track .opac-book-card { flex-basis: 128px; } }
+
+     
+    .baca-online-page {
+      background: linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+      border-radius: 14px;
+      padding: 26px 20px 34px;
+      margin: -8px -8px 0;
+      color: #F7F3EA;
+    }
+     
+    .baca-banner {
+       
+      position: relative; aspect-ratio: 16 / 7; min-height: 190px; max-height: 380px;
+       
+      width: calc(100% + 40px);
+      margin: -26px -20px 22px;
+      border-radius: 14px 14px 0 0; overflow: hidden;
+      background: linear-gradient(135deg, var(--ink-2), var(--ink)); touch-action: pan-y;
+    }
+    .baca-banner-slides { position: absolute; inset: 0; }
+    .baca-banner-slide {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      opacity: 0; transition: opacity 0.8s ease;
+    }
+    .baca-banner-slide.aktif { opacity: 1; }
+    .baca-banner-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(59,42,30,0.2) 0%, rgba(59,42,30,0.45) 55%, var(--ink) 100%);
+    }
+    .baca-banner-search { position: absolute; top: 14px; right: 14px; z-index: 2; }
+    .baca-banner-content {
+      position: absolute; left: 20px; right: 76px; bottom: 22px; z-index: 1;
+      display: flex; align-items: center; gap: 14px; color: #fff;
+    }
+    .baca-banner-logo {
+      height: 56px; width: auto; max-width: 72px; object-fit: contain; flex-shrink: 0;
+      background: rgba(255,255,255,0.92); border-radius: 10px; padding: 5px;
+    }
+    .baca-banner-label { font-size: 0.68rem; letter-spacing: 0.18em; font-weight: 700; color: var(--brass-light); }
+    .baca-banner-nama {
+      font-family: var(--font-display); font-size: 1.7rem; font-weight: 600;
+      margin: 2px 0; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.45);
+    }
+    .baca-banner-sub { font-size: 0.82rem; color: #E6DAC2; }
+    .baca-banner-dots { position: absolute; right: 18px; bottom: 20px; z-index: 2; display: flex; gap: 6px; }
+    .baca-banner-dot { width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0; background: rgba(255,255,255,0.4); }
+    .baca-banner-dot.aktif { background: var(--brass-light); }
+    @media (max-width: 576px) {
+      .baca-banner { aspect-ratio: 16 / 9; min-height: 170px; max-height: none; margin: -26px -20px 18px; }
+      .baca-banner-nama { font-size: 1.25rem; }
+      .baca-banner-logo { height: 44px; }
+      .baca-banner-content { left: 14px; bottom: 16px; gap: 10px; }
+    }
+    .baca-search-toggle {
+      background: rgba(255,255,255,0.1); border: none; color: #F7F3EA;
+      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .baca-search-toggle:hover { background: rgba(255,255,255,0.2); }
+    #bacaSearchBox input {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #fff;
+    }
+    #bacaSearchBox input::placeholder { color: #B5A88F; }
+    #bacaSearchBox input:focus { background: rgba(255,255,255,0.12); color: #fff; box-shadow: none; border-color: var(--brass-light); }
+
+    .baca-rak { margin-bottom: 26px; }
+    .baca-rak-title {
+      font-family: var(--font-display); font-size: 1.05rem; font-weight: 600;
+      color: #F0E6D2; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .baca-rak-title .baca-rak-count { font-size: 0.72rem; font-weight: 400; color: #A6772C; }
+    .baca-rak-viewport { overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; }
+    .baca-rak-track { display: flex; gap: 16px; }
+    .baca-book-card {
+      flex: 0 0 128px; cursor: pointer; text-align: left;
+      transition: transform 0.2s;
+    }
+    .baca-book-card:hover { transform: translateY(-4px) scale(1.03); }
+    .baca-book-cover {
+      width: 128px; height: 184px; object-fit: cover; border-radius: 8px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35); background: #3a2b1d;
+    }
+    .baca-book-cover-placeholder {
+      width: 128px; height: 184px; border-radius: 8px; background: #4A3728;
+      display: flex; align-items: center; justify-content: center; color: #8C7A5E;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+    .baca-book-title {
+      font-size: 0.8rem; font-weight: 600; color: #F0E6D2; margin-top: 8px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 128px;
+    }
+
+     
+    .baca-info-modal-content { border-radius: 14px; overflow: hidden; border: none; position: relative; }
+    .baca-info-close { position: absolute; top: 10px; right: 10px; z-index: 2; background: rgba(0,0,0,0.4); border-radius: 50%; padding: 8px; filter: invert(1) grayscale(1); }
+    .baca-info-cover-wrap { background: var(--ink); text-align: center; padding: 24px; }
+    .baca-info-cover { width: 140px; height: 202px; object-fit: cover; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+    .baca-info-body { padding: 20px 22px 24px; text-align: center; }
+    .baca-info-kategori {
+      display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em;
+      color: var(--brass); background: #FBF2DF; border-radius: 20px; padding: 3px 12px; margin-bottom: 8px;
+    }
+    .baca-info-judul { font-family: var(--font-display); margin-bottom: 2px; }
+    .baca-info-kreator { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; }
+    .baca-info-blurb {
+      font-size: 0.82rem; color: var(--text); margin-bottom: 16px;
+      max-height: 6.5em; overflow-y: auto; padding-right: 4px;
+      overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    }
+    .baca-btn-baca-sekarang {
+      background: var(--brass); color: #fff; border: none; border-radius: 24px;
+      padding: 11px; font-weight: 700;
+    }
+    .baca-btn-baca-sekarang:hover { background: var(--brass-light); color: #fff; }
+
+     
+    .baca-pdf-reader {
+      position: fixed; inset: 0; background: #1a1a1a; z-index: 2000;
+      display: flex; flex-direction: column;
+    }
+     
+    .baca-book-card { position: relative; }
+    .kg-lencana { position: absolute; top: 6px; left: 6px; z-index: 2; font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.35); pointer-events: none; }
+    .kg-lencana.gambar { background: #2e7d32; color: #fff; }
+    .kg-lencana.pdf { background: #ef8a17; color: #fff; }
+    .kg-ringkasan { background: rgba(255,255,255,0.92); color: #333; border-radius: 10px; padding: 8px 14px; margin: 0 0 14px; font-size: 0.9rem; display: inline-block; }
+     
+    .baca-pdf-layar-penuh { background: transparent; border: 0; color: #eee; font-size: 1.1rem; padding: 4px 8px; margin-left: 10px; cursor: pointer; }
+    .baca-pdf-layar-penuh:hover { color: #fff; }
+    .baca-pdf-reader:fullscreen { width: 100vw; height: 100vh; }
+    .baca-pdf-toolbar {
+      flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; background: #111; color: #eee;
+    }
+    .baca-pdf-close { background: none; border: none; color: #eee; font-size: 1.2rem; }
+    .baca-pdf-judul-toolbar { font-size: 0.85rem; font-weight: 600; flex: 1; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 10px; }
+    .baca-pdf-halaman-indikator { font-size: 0.78rem; color: #aaa; flex-shrink: 0; min-width: 64px; text-align: right; }
+    .baca-pdf-canvas-wrap {
+      flex: 1 1 auto; overflow: auto; display: flex; align-items: center; justify-content: center;
+      gap: 6px; position: relative; touch-action: pan-y;
+    }
+    .baca-pdf-canvas-wrap canvas { flex: none; max-width: 100%; max-height: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+    .baca-pdf-loading { position: absolute; color: #ccc; display: none; text-align: center; }
+    .baca-pdf-nav {
+      position: fixed; top: 50%; transform: translateY(-50%); z-index: 2001;
+      background: rgba(255,255,255,0.1); border: none; color: #fff;
+      width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .baca-pdf-nav:hover { background: rgba(255,255,255,0.25); }
+    .baca-pdf-nav:disabled { opacity: 0.25; }
+    .baca-pdf-prev { left: 14px; }
+    .baca-pdf-next { right: 14px; }
+    @media (max-width: 576px) {
+      .baca-book-card { flex-basis: 108px; }
+      .baca-book-cover, .baca-book-cover-placeholder { width: 108px; height: 156px; }
+      .baca-book-title { max-width: 108px; }
+    }
+
+     
+    .buku-input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 14px;
+    }
+    .buku-input-card {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+    }
+    .buku-input-cover {
+      width: 100%; aspect-ratio: 2 / 3; height: auto; object-fit: cover;
+      border-radius: 4px; background: #f2ede2;
+    }
+    .buku-input-cover-placeholder {
+      width: 100%; aspect-ratio: 2 / 3; border-radius: 4px; background: #f2ede2;
+      display: flex; align-items: center; justify-content: center; color: #b5a88f;
+    }
+    .buku-input-title {
+      font-size: 0.85rem; font-weight: 700; margin-top: 8px;
+      line-height: 1.3;
+    }
+    .buku-input-author { font-size: 0.75rem; color: #6b6357; margin-top: 2px; }
+    .buku-input-meta { font-size: 0.7rem; color: #9a8f79; margin-top: 3px; }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--ink);
+      color: var(--brass-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+     
+    .cover-dropzone {
+      border: 2px dashed var(--line);
+      border-radius: var(--border-radius);
+      padding: 30px 18px;
+      text-align: center;
+      background: var(--paper);
+    }
+
+    .cover-dropzone-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      color: var(--brass);
+      font-size: 1.3rem;
+    }
+
+    .info-tambahan-item {
+      margin-bottom: 14px;
+    }
+
+    .info-tambahan-item label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .info-tambahan-value {
+      border: 1.5px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      background: var(--paper);
+      color: var(--text);
+    }
+
+     
+    .detail-cover-img {
+      width: 100%;
+      max-width: 220px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-lift);
+      border: 1px solid var(--line);
+    }
+
+    .detail-cover-placeholder {
+      width: 100%;
+      max-width: 220px;
+      aspect-ratio: 3 / 4;
+      margin: 0 auto;
+      border: 1.5px dashed var(--line);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 10px;
+      background: var(--paper);
+    }
+
+    .user-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .user-row:last-child { border-bottom: none; }
+
+    .export-dual-list {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      height: 320px;
+      overflow-y: auto;
+      background: var(--paper);
+    }
+
+    .export-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      background: #fff;
+      transition: background 0.15s;
+    }
+
+    .export-item:hover {
+      background: #FBF3E1;
+    }
+
+    .export-item:last-child { border-bottom: none; }
+
+    .export-item i {
+      color: var(--text-muted);
+      font-size: 0.8em;
+    }
+
+    .export-item-selected {
+      cursor: default;
+      background: transparent;
+    }
+
+    .export-item-selected:hover {
+      background: transparent;
+    }
+
+    .export-item-order {
+      font-family: var(--font-mono);
+      color: var(--brass);
+      font-weight: 600;
+      font-size: 0.8em;
+      flex-shrink: 0;
+    }
+
+    .export-item-label {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .export-item-label:hover {
+      text-decoration: line-through;
+      color: var(--brick);
+    }
+
+    .export-item-actions {
+      display: flex;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .export-item-actions button {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      cursor: pointer;
+    }
+
+    .export-item-actions button:hover {
+      background: var(--paper);
+      color: var(--ink);
+    }
+  #printLabelArea { display: none; }
+  .print-label {
+    width: 9cm; height: 3.6cm; box-sizing: border-box;
+    border: 1px dashed #999; border-radius: 4px;
+    padding: 6px 8px; margin: 4px; display: inline-block;
+    text-align: center; font-family: Arial, sans-serif; page-break-inside: avoid;
   }
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body { margin: 0; background: var(--kertas); color: var(--tinta); font: 400 16px/1.55 "Lexend", system-ui, sans-serif; }
-  a { color: var(--hijau); }
-  :focus-visible { outline: 3px solid var(--label); outline-offset: 2px; }
-  .wadah { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
-
-  /* ---------- Kepala & pencarian ---------- */
-  header.kepala { background: var(--hijau); color: #eaf3f1; padding: 28px 0 36px; position: relative; overflow: hidden; }
-  /* deretan punggung buku samar di latar kepala */
-  header.kepala::after {
-    content: ""; position: absolute; inset: auto 0 0 0; height: 14px;
-    background: repeating-linear-gradient(90deg, #0b4a44 0 18px, #136a61 18px 30px, #0d544d 30px 52px, #18766b 52px 60px);
-    opacity: .9;
+  .print-label-header { font-size: 13px; font-weight: 700; margin-bottom: 6px; line-height: 1.2; }
+  .print-label-body { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+   
+  .print-label-barcode-wrap { flex-shrink: 0; display: flex; flex-direction: row; align-items: center; gap: 4px; }
+  .print-label-barcode-box { display: flex; align-items: center; justify-content: center; }
+  .print-label-barcode-id {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 13px;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
   }
-  .identitas { display: flex; align-items: center; gap: 14px; }
-  .identitas img { width: 48px; height: 48px; object-fit: contain; background: #fff; border-radius: 50%; padding: 4px; }
-  .identitas .nama { font-weight: 600; font-size: 1.05rem; line-height: 1.25; }
-  .identitas .sub { font-size: .85rem; opacity: .8; }
-  h1.judul-hal { font-weight: 600; font-size: clamp(1.7rem, 4.5vw, 2.6rem); line-height: 1.15; margin: 26px 0 6px; letter-spacing: -.01em; max-width: 18ch; }
-  .lead { margin: 0 0 20px; opacity: .85; max-width: 58ch; }
-  form.cari { display: flex; gap: 8px; background: var(--putih); border-radius: 14px; padding: 6px; box-shadow: 0 10px 30px rgba(5, 40, 36, .25); max-width: 760px; }
-  form.cari input { flex: 1; border: 0; font: inherit; font-size: 1.05rem; padding: 12px 14px; color: var(--tinta); background: transparent; min-width: 0; }
-  form.cari input:focus { outline: none; }
-  form.cari button { border: 0; border-radius: 10px; background: var(--label); color: var(--tinta); font: 600 1rem "Lexend", sans-serif; padding: 0 22px; cursor: pointer; }
-  .saran { margin-top: 12px; font-size: .88rem; opacity: .9; }
-  .saran button { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 3px 12px; margin: 4px 6px 0 0; font: inherit; cursor: pointer; }
-  .saran button:hover { background: rgba(255,255,255,.22); }
-
-  /* ---------- Saringan ---------- */
-  .saringan { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; padding: 18px 0 6px; }
-  .grup-tombol { display: inline-flex; border: 1px solid var(--garis); border-radius: 999px; background: var(--putih); padding: 3px; }
-  .grup-tombol button { border: 0; background: transparent; font: inherit; font-size: .9rem; padding: 5px 14px; border-radius: 999px; cursor: pointer; color: var(--tinta-2); }
-  .grup-tombol button[aria-pressed="true"] { background: var(--hijau); color: #fff; }
-  .saringan label { font-size: .9rem; color: var(--tinta-2); display: inline-flex; align-items: center; gap: 6px; }
-  .saringan select { font: inherit; font-size: .9rem; padding: 6px 10px; border: 1px solid var(--garis); border-radius: 8px; background: var(--putih); color: var(--tinta); }
-  .ringkas { color: var(--tinta-2); font-size: .92rem; padding: 4px 0 14px; }
-
-  /* ---------- Rak baru masuk ---------- */
-  section.rak-baru h2, section.hasil h2 { font-size: 1.15rem; font-weight: 600; margin: 18px 0 12px; }
-  .strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(130px, 150px); gap: 16px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; align-items: start; }
-  .strip > * { scroll-snap-align: start; }
-
-  /* ---------- Kartu buku dengan label punggung ---------- */
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 22px 18px; align-items: start; }
-  .buku { all: unset; display: block; cursor: pointer; min-width: 0; }
-  .buku .sampul { position: relative; aspect-ratio: 2 / 3; min-height: 0; height: auto; border-radius: 4px 8px 8px 4px; overflow: hidden; background: #dfe7e5; box-shadow: inset 6px 0 0 rgba(0,0,0,.12), 0 2px 6px rgba(20, 45, 42, .18); }
-  .buku .sampul img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .sampul .tanpa { position: absolute; inset: 0; display: flex; overflow: hidden; align-items: center; justify-content: center; padding: 14px; text-align: center; color: #eaf3f1; font-weight: 500; font-size: .95rem; line-height: 1.3; background: linear-gradient(160deg, var(--hijau), var(--hijau-tua)); }
-  .sampul .tanpa { padding-bottom: 64px; }
-  .sampul { contain: size; }
-  .detail-isi .sampul .tanpa { font-size: 1.05rem; }
-  /* stiker label punggung: nomor panggil bertumpuk, seperti di rak */
-  .label-np { position: absolute; left: 8px; bottom: 8px; background: var(--label); color: #1c1a12; font: 600 .68rem/1.2 "IBM Plex Mono", monospace; padding: 5px 7px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,.35); text-align: center; min-width: 52px; }
-  .label-np span { display: block; }
-  .buku .judul { font-weight: 500; font-size: .95rem; line-height: 1.3; margin-top: 9px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .buku .pengarang { font-size: .82rem; color: var(--tinta-2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .status { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; margin-top: 5px; font-weight: 500; }
-  .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
-  .status.ada { color: var(--ada); }
-  .status.habis { color: var(--habis); }
-  .status.tempat { color: #7a5b00; }
-  .buku:hover .judul { text-decoration: underline; text-decoration-color: var(--label); text-decoration-thickness: 2px; }
-  .buku:focus-visible .sampul { outline: 3px solid var(--label); outline-offset: 3px; }
-
-  .lagi { display: block; margin: 28px auto 8px; border: 1px solid var(--hijau); color: var(--hijau); background: transparent; font: 500 .95rem "Lexend", sans-serif; padding: 10px 22px; border-radius: 999px; cursor: pointer; }
-  .kosong { background: var(--putih); border: 1px dashed var(--garis); border-radius: var(--r); padding: 28px; text-align: center; color: var(--tinta-2); }
-
-  /* ---------- Detail buku ---------- */
-  dialog.detail { border: 0; padding: 0; width: min(760px, 100% - 24px); max-height: 90vh; border-radius: 16px; color: var(--tinta); }
-  dialog.detail::backdrop { background: rgba(10, 30, 28, .55); }
-  .detail-isi { display: grid; grid-template-columns: 200px 1fr; gap: 24px; padding: 26px; overflow: auto; max-height: 90vh; }
-  .detail-isi .sampul { position: relative; aspect-ratio: 2/3; border-radius: 4px 8px 8px 4px; overflow: hidden; background: #dfe7e5; box-shadow: inset 6px 0 0 rgba(0,0,0,.12), 0 4px 14px rgba(20,45,42,.2); }
-  .detail-isi .sampul img { width: 100%; height: 100%; object-fit: cover; }
-  .detail-isi h2 { font-size: 1.4rem; line-height: 1.25; margin: 0 0 4px; font-weight: 600; }
-  .detail-isi .anak { color: var(--tinta-2); margin: 0 0 10px; }
-  .letak { background: var(--kertas); border-radius: 12px; padding: 12px 14px; margin: 14px 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: .92rem; }
-  .letak dt { color: var(--tinta-2); }
-  .letak dd { margin: 0; font-weight: 500; }
-  .meta { font-size: .9rem; color: var(--tinta-2); margin: 0 0 6px; }
-  .subjek button { border: 1px solid var(--garis); background: var(--putih); border-radius: 999px; padding: 3px 11px; margin: 4px 6px 0 0; font: inherit; font-size: .82rem; cursor: pointer; color: var(--hijau); }
-  .sinopsis { margin-top: 14px; font-size: .95rem; line-height: 1.65; max-width: 62ch; }
-  .tutup { position: absolute; top: 10px; right: 12px; border: 0; background: var(--kertas); width: 36px; height: 36px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; color: var(--tinta); }
-
-  footer { margin-top: 48px; background: var(--hijau-tua); color: #cfe2df; font-size: .9rem; padding: 26px 0; }
-  footer .wadah { display: flex; flex-wrap: wrap; gap: 8px 32px; justify-content: space-between; }
-  footer b { color: #fff; font-weight: 500; }
-
-  .memuat { padding: 40px 0; color: var(--tinta-2); }
-
-  @media (max-width: 640px) {
-    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; }
-    .detail-isi { grid-template-columns: 1fr; padding: 22px 18px; }
-    .detail-isi .sampul { width: 150px; }
-    dialog.detail { width: 100%; max-height: 92vh; margin: auto 0 0; border-radius: 16px 16px 0 0; }
-    form.cari button { padding: 0 14px; }
+  .print-label-center { flex: 1; min-width: 0; }
+  .print-label-ddc { font-size: 17px; font-weight: 700; }
+  .print-label-kode { font-size: 13px; font-weight: 600; }
+  @media print {
+     
+    body > *:not(#printLabelArea) { display: none !important; }
+    #printLabelArea { display: block !important; width: 100%; }
   }
-  @media (prefers-reduced-motion: no-preference) {
-    dialog.detail[open] { animation: naik .22s ease-out; }
-    @keyframes naik { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
-  }
-</style>
+  
+ 
+.lpa-tabs { border-bottom: 2px solid var(--line); flex-wrap: wrap; }
+.lpa-tabs .nav-link { color: var(--ink-soft); font-weight: 500; font-size: 0.88rem; border: 0; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+.lpa-tabs .nav-link.active { color: var(--ink); background: transparent; border-bottom-color: var(--brass); }
+.lpa-tabs .lpa-badge { font-size: 0.7rem; margin-left: 4px; }
+.lpa-panel { background: #fff; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 var(--border-radius) var(--border-radius); padding: 18px; }
+.lpa-item { border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin-bottom: 12px; background: #FDFBF6; }
+.lpa-item.lpa-tersembunyi { opacity: 0.65; }
+.lpa-item .form-label { font-size: 0.8rem; font-weight: 600; color: var(--ink-soft); margin-bottom: 2px; }
+.lpa-item textarea { min-height: 70px; }
+.lpa-item-aksi .btn { padding: 2px 8px; }
+.lpa-catatan { font-size: 0.82rem; background: #F3E9D6; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; color: var(--ink-2); }
+.lpa-pesan-table td, .lpa-pesan-table th { font-size: 0.85rem; vertical-align: top; }
+.portal-nav-bar { background: var(--ink); border-bottom: 3px solid var(--brass); padding: 8px 16px; display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
+.portal-nav-bar a { color: #EFE6D2; text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 4px 10px; border-radius: 6px; }
+.portal-nav-bar a:hover, .portal-nav-bar a.aktif { background: rgba(255,255,255,0.12); color: #fff; }
+.portal-nav-bar .portal-nav-brand { color: #fff; font-weight: 700; margin-right: 8px; }
+
+
+            #tabTamuRak .rak-wadah { max-width: 760px; margin: 0 auto; }
+            #tabTamuRak .rak-item { display: flex; gap: 1.25rem; align-items: center; }
+            #tabTamuRak .rak-item + .rak-item { border-top: 1px dashed #ced4da; margin-top: 1rem; padding-top: 1rem; }
+            #tabTamuRak .rak-kode { min-width: 150px; text-align: center; padding: .75rem 1rem; border-radius: 14px;
+                                     background: #e8f5ee; color: #146c43; }
+            #tabTamuRak .rak-kode .angka { font-size: 4.5rem; font-weight: 800; line-height: 1; letter-spacing: .04em; }
+            #tabTamuRak .rak-kode .uraian { font-size: .85rem; font-weight: 600; margin-top: .35rem; }
+            #tabTamuRak .rak-kode.teks .angka { font-size: 1.35rem; line-height: 1.2; }
+            #tabTamuRak .rak-kode.kosong { background: #fff3cd; color: #997404; }
+            #tabTamuRak .rak-judul { font-weight: 700; font-size: 1.1rem; }
+            @media (max-width: 576px) {
+              #tabTamuRak .rak-item { flex-direction: column; align-items: stretch; }
+            }
+          
+
+           
+          .katalog-tab-bar { display:flex; justify-content:center; flex-wrap:wrap; gap:6px; margin:0 auto 18px; }
+          .katalog-tab { border:1px solid var(--line, #d8cfbf); background:var(--paper-card, #fff); color:var(--ink, #2b211a);
+            border-radius:999px; padding:7px 18px; font-size:0.9rem; font-weight:600; cursor:pointer; transition:box-shadow .2s; }
+          .katalog-tab:hover { box-shadow:0 2px 8px rgba(0,0,0,0.15); }
+          .katalog-tab.aktif { background:var(--ink, #2b211a); color:#fff; border-color:var(--ink, #2b211a); cursor:default; box-shadow:none; }
+           
+          .baca-online-page .katalog-tab.aktif { background:#B8862F; border-color:#B8862F; color:#fff; }
+          .baca-online-page .katalog-tab-bar { margin-top:4px; }
+        
+  </style>
+  <style>
+    /* Kerangka halaman publik (pengganti sidebar aplikasi) */
+    .opac-publik-header { background: var(--ink); color: #EFE8DC; }
+    .opac-publik-header .sidebar-logo { border-bottom: 0; padding: 14px 0; }
+    .opac-publik-header .sidebar-logo-img img { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; }
+    .opac-publik-info { background: var(--paper-card); border-bottom: 1px solid var(--line); color: var(--text-muted); font-size: 0.8rem; padding: 8px 0; }
+    .opac-publik-main { padding: 28px 0 40px; }
+    .opac-publik-footer { border-top: 1px solid var(--line); color: var(--text-muted); font-size: 0.78rem; padding: 16px 0 24px; text-align: center; }
+    .opac-publik-header .sidebar-logo-text, .opac-publik-header .sidebar-logo-sub { display: block !important; }
+    #wadahNotifikasi { position: fixed; top: 16px; right: 16px; z-index: 2000; max-width: 320px; }
+  </style>
 </head>
 <body>
-<header class="kepala">
-  <div class="wadah">
-    <div class="identitas">
-      <img id="logo" alt="" hidden>
-      <div>
-        <div class="nama" id="namaPerpus">Perpustakaan SMPIT Thariq Bin Ziyad</div>
-        <div class="sub" id="namaSekolah">Katalog daring</div>
+  <header class="opac-publik-header">
+    <div class="container">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-img"><i class="fas fa-book-open" id="ikonPerpus"></i><img id="logoPerpus" alt="" style="display:none;"></div>
+        <div>
+          <div class="sidebar-logo-text">Perpustakaan</div>
+          <div class="sidebar-logo-sub">Thariq Bin Ziyad</div>
+        </div>
       </div>
     </div>
-    <h1 class="judul-hal">Cari buku, lihat raknya, lalu pinjam.</h1>
-    <p class="lead">Ketik judul, pengarang, atau topik. Kamu bisa langsung melihat apakah bukunya sedang tersedia dan di rak mana letaknya.</p>
-    <form class="cari" id="formCari" role="search">
-      <input id="q" type="search" placeholder="Contoh: Tere Liye, sejarah Islam, sains" aria-label="Cari judul, pengarang, atau topik" autocomplete="off">
-      <button type="submit">Cari</button>
-    </form>
-    <div class="saran" id="saran" hidden></div>
-  </div>
-</header>
+  </header>
+  <div class="opac-publik-info"><div class="container" id="infoLayanan">&nbsp;</div></div>
+  <div id="wadahNotifikasi"></div>
 
-<main class="wadah">
-  <div class="saringan" aria-label="Saring hasil">
-    <div class="grup-tombol" role="group" aria-label="Jenis bacaan">
-      <button type="button" data-ff="" aria-pressed="true">Semua</button>
-      <button type="button" data-ff="Fiksi" aria-pressed="false">Fiksi</button>
-      <button type="button" data-ff="Nonfiksi" aria-pressed="false">Nonfiksi</button>
+  <main class="opac-publik-main">
+    <div class="container">
+      <div class="page-section active" id="page-opac">
+        <style>
+           
+          .katalog-tab-bar { display:flex; justify-content:center; flex-wrap:wrap; gap:6px; margin:0 auto 18px; }
+          .katalog-tab { border:1px solid var(--line, #d8cfbf); background:var(--paper-card, #fff); color:var(--ink, #2b211a);
+            border-radius:999px; padding:7px 18px; font-size:0.9rem; font-weight:600; cursor:pointer; transition:box-shadow .2s; }
+          .katalog-tab:hover { box-shadow:0 2px 8px rgba(0,0,0,0.15); }
+          .katalog-tab.aktif { background:var(--ink, #2b211a); color:#fff; border-color:var(--ink, #2b211a); cursor:default; box-shadow:none; }
+           
+          .baca-online-page .katalog-tab.aktif { background:#B8862F; border-color:#B8862F; color:#fff; }
+          .baca-online-page .katalog-tab-bar { margin-top:4px; }
+        </style>
+                <div class="text-center mb-4">
+          <h4><i class="fas fa-book-open"></i> Katalog Perpustakaan</h4>
+          <p class="text-muted small">Cari judul buku, nama pengarang, atau subjek</p>
+          <div class="input-group mx-auto" style="max-width:600px;">
+            <input type="text" class="form-control form-control-lg" id="opacSearchInput"
+                   placeholder="Ketik judul, pengarang, atau subjek..."
+                   onkeydown="if(event.key==='Enter'){ event.preventDefault(); cariBukuOpac(); }">
+            <button class="btn btn-primary" onclick="cariBukuOpac()"><i class="fas fa-search"></i> Cari</button>
+          </div>
+        </div>
+
+        
+        <div id="opacHasilPencarian" style="display:none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="mb-0" id="opacHasilJudul">Hasil Pencarian</h6>
+            <button class="btn btn-sm btn-outline-secondary" onclick="tutupHasilPencarianOpac()">
+              <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+            </button>
+          </div>
+          <div class="row g-3" id="opacHasilGrid"></div>
+          <div id="opacHasilKosong" class="text-center text-muted py-5" style="display:none;">
+            <i class="fas fa-magnifying-glass fa-2x mb-2"></i>
+            <p>Tidak ada buku yang cocok dengan pencarian itu.</p>
+          </div>
+        </div>
+
+        
+        <div id="opacBeranda">
+          <div class="mb-4">
+            <h6 class="mb-3"><i class="fas fa-arrow-trend-up text-warning"></i> Buku Terpopuler</h6>
+            <div class="opac-rak-wrap">
+              <button type="button" class="opac-rak-panah opac-karosel-panah kiri" onclick="geserKaroselOpac('populer', -1)" aria-label="Geser ke kiri"><i class="fas fa-chevron-left"></i></button>
+              <div class="opac-carousel-viewport">
+                <div class="opac-carousel-track" id="trackOpacTerpopuler"></div>
+              </div>
+              <button type="button" class="opac-rak-panah opac-karosel-panah kanan" onclick="geserKaroselOpac('populer', 1)" aria-label="Geser ke kanan"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="mb-4">
+            <h6 class="mb-3"><i class="fas fa-star text-success"></i> Buku Baru Ditambahkan</h6>
+            <div class="opac-rak-wrap">
+              <button type="button" class="opac-rak-panah opac-karosel-panah kiri" onclick="geserKaroselOpac('terbaru', -1)" aria-label="Geser ke kiri"><i class="fas fa-chevron-left"></i></button>
+              <div class="opac-carousel-viewport">
+                <div class="opac-carousel-track" id="trackOpacTerbaru"></div>
+              </div>
+              <button type="button" class="opac-rak-panah opac-karosel-panah kanan" onclick="geserKaroselOpac('terbaru', 1)" aria-label="Geser ke kanan"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+
+          
+          <div class="mt-5 pt-3" style="border-top: 1px solid var(--line);">
+            <h6 class="mb-3"><i class="fas fa-layer-group text-primary"></i> Jelajahi Berdasarkan Bentuk Karya Tulis</h6>
+            <div id="opacEtalaseIsi"><p class="text-muted small">Memuat etalase...</p></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <label><input type="checkbox" id="hanyaAda"> Hanya yang tersedia</label>
-    <label>Bentuk <select id="bentuk"><option value="">Semua</option></select></label>
-    <label>Urutkan <select id="urut">
-      <option value="relevan">Paling cocok</option>
-      <option value="baru">Terbaru masuk</option>
-      <option value="judul">Judul A–Z</option>
-    </select></label>
-  </div>
+  </main>
 
-  <div id="memuat" class="memuat">Memuat katalog…</div>
+  <div class="modal fade" id="opacDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"><i class="fas fa-book"></i> Detail Buku</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="opacDetailBody"></div>
+          </div>
+        </div>
+      </div>
 
-  <section class="rak-baru" id="bagianBaru" hidden>
-    <h2>Baru masuk ke rak</h2>
-    <div class="strip" id="stripBaru"></div>
-  </section>
+  <footer class="opac-publik-footer">
+    <div class="container">Perpustakaan SMPIT Thariq Bin Ziyad · Katalog daring</div>
+  </footer>
 
-  <section class="hasil" id="bagianHasil" hidden>
-    <h2 id="judulHasil">Semua koleksi</h2>
-    <div class="ringkas" id="ringkas"></div>
-    <div class="grid" id="grid"></div>
-    <button class="lagi" id="lagi" type="button" hidden>Tampilkan lebih banyak</button>
-  </section>
-</main>
-
-<footer>
-  <div class="wadah">
-    <div><b id="fNama">Perpustakaan SMPIT Thariq Bin Ziyad</b><div id="fAlamat"></div></div>
-    <div id="fLayanan"></div>
-    <div>Ketersediaan diperbarui <span id="fDiperbarui">-</span></div>
-  </div>
-</footer>
-
-<dialog class="detail" id="detail" aria-labelledby="dJudul">
-  <button class="tutup" type="button" id="tutup" aria-label="Tutup">×</button>
-  <div class="detail-isi" id="detailIsi"></div>
-</dialog>
-
-<script>
-(function () {
-  'use strict';
-  const HAL = 24;
-  let data = null, semua = [], tampil = [], batas = HAL;
-  const st = { q: '', ff: '', ada: false, bentuk: '', urut: 'relevan' };
-  const $ = (id) => document.getElementById(id);
-
-  const normal = (s) => String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9؀-ۿ]+/g, ' ').trim();
-  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
-  // Nomor panggil "899.221 3 TER a" -> baris label punggung: 899.221 3 / TER / a
-  function labelNP(np) {
-    const t = String(np || '').trim().split(/\s+/);
-    if (!t.length || !t[0]) return '';
-    const baris = []; let angka = [];
-    t.forEach((x) => { if (/^[\d.]+$/.test(x) && !baris.length) angka.push(x); else baris.push(x); });
-    const isi = [angka.join(' ')].concat(baris).filter(Boolean);
-    return '<div class="label-np" aria-hidden="true">' + isi.map((x) => '<span>' + esc(x) + '</span>').join('') + '</div>';
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  // =====================================================================
+  // OPAC publik (GitHub Pages) - meniru halaman OPAC di aplikasi perpustakaan.
+  // Data dibaca dari data/katalog.json + data/status.json yang dikirim
+  // berkala oleh Apps Script. Tidak ada data anggota/peminjam.
+  // =====================================================================
+  function escapeHTML(s) {
+    return String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
   }
-  function statusHTML(b) {
-    if (b.akses === 'Baca di Tempat') return '<span class="status tempat">Baca di tempat</span>';
-    if (!b.total) return '<span class="status habis">Belum ada eksemplar</span>';
-    return b.tersedia > 0 ? '<span class="status ada">' + b.tersedia + ' tersedia</span>' : '<span class="status habis">Sedang dipinjam</span>';
-  }
-  function sampulHTML(b) {
-    const tanpa = '<div class="tanpa">' + esc(b.judul) + '</div>';
-    return '<div class="sampul">' + (b.cover ? '<img loading="lazy" alt="" src="' + esc(b.cover) + '" onerror="this.replaceWith(Object.assign(document.createElement(\'div\'),{className:\'tanpa\',textContent:this.dataset.j}))" data-j="' + esc(b.judul) + '">' : tanpa) + labelNP(b.nomorPanggil) + '</div>';
-  }
-  function kartuHTML(b) {
-    return '<button class="buku" type="button" data-id="' + esc(b.id) + '" aria-label="' + esc(b.judul + (b.pengarang ? ', ' + b.pengarang : '')) + '">' +
-      sampulHTML(b) + '<div class="judul">' + esc(b.judul) + '</div>' +
-      (b.pengarang ? '<div class="pengarang">' + esc(b.pengarang) + '</div>' : '') + statusHTML(b) + '</button>';
+  function showNotification(pesan, jenis) {
+    const box = document.getElementById('wadahNotifikasi');
+    const el = document.createElement('div');
+    el.className = 'alert alert-' + (jenis || 'info') + ' shadow-sm py-2 px-3 mb-2';
+    el.textContent = pesan;
+    box.appendChild(el);
+    setTimeout(function() { el.remove(); }, 3500);
   }
 
-  function skor(b, kata) {
-    let s = 0;
-    for (const k of kata) {
-      if (b._j.includes(k)) s += b._j.startsWith(k) ? 6 : 4;
-      else if (b._p.includes(k)) s += 3;
-      else if (b._s.includes(k)) s += 2;
-      else if (b._x.includes(k)) s += 1;
-      else return 0;
+  const OPAC_RAK_JUMLAH_BUKU = 12;
+  const OPAC_BENTUK_KOSONG = 'Lainnya';
+  let opacEtalaseData = [];
+  const opacIntervals = {};
+  const opacKaroselState_ = {};
+  let opacIndeks = null;       // semua buku, terbaru dulu
+  let opacPeta = {};           // idJudul -> data buku lengkap
+  let opacDetailAktif = null;
+
+  function kartuDariBuku_(b, denganPinjam) {
+    return { idJudul: b.id, judulUtama: b.judul, kreatorUtama: b.pengarang, coverUrl: b.cover,
+      tersedia: b.tersedia, totalEksemplar: b.total, jumlahDipinjam: denganPinjam ? b.dipinjam : undefined };
+  }
+
+  function loadOpacBeranda() {
+    const populer = opacIndeks.filter(function(b) { return b.dipinjam > 0; })
+      .slice().sort(function(a, b) { return b.dipinjam - a.dipinjam; }).slice(0, 10)
+      .map(function(b) { return kartuDariBuku_(b, true); });
+    initOpacCarousel('trackOpacTerpopuler', populer, 'populer');
+    initOpacCarousel('trackOpacTerbaru', opacIndeks.slice(0, 10).map(function(b) { return kartuDariBuku_(b); }), 'terbaru');
+    loadOpacEtalase();
+  }
+
+  // Satu rak per Bentuk Karya Tulis; rak terbanyak dulu, "Lainnya" paling akhir.
+  function kelompokPerBentuk_() {
+    const grup = {};
+    opacIndeks.forEach(function(b) {
+      const nama = String(b.bentuk || '').trim() || OPAC_BENTUK_KOSONG;
+      const k = nama.toLowerCase();
+      if (!grup[k]) grup[k] = { bentuk: nama, buku: [] };
+      grup[k].buku.push(kartuDariBuku_(b));
+    });
+    return Object.keys(grup).map(function(k) { return grup[k]; }).sort(function(a, b) {
+      const la = a.bentuk === OPAC_BENTUK_KOSONG, lb = b.bentuk === OPAC_BENTUK_KOSONG;
+      if (la !== lb) return la ? 1 : -1;
+      return b.buku.length - a.buku.length || a.bentuk.localeCompare(b.bentuk, 'id');
+    });
+  }
+
+  function loadOpacEtalase() {
+    opacEtalaseData = kelompokPerBentuk_().map(function(g) {
+      return { bentuk: g.bentuk, total: g.buku.length, buku: g.buku.slice(0, OPAC_RAK_JUMLAH_BUKU), semua: g.buku };
+    });
+    renderEtalaseBentukOpac(opacEtalaseData);
+  }
+
+  function renderEtalaseBentukOpac(daftar) {
+    const wadah = document.getElementById('opacEtalaseIsi');
+    if (!daftar || daftar.length === 0) {
+      wadah.innerHTML = '<p class="text-muted small">Belum ada buku untuk ditampilkan.</p>';
+      return;
     }
-    return s;
+    wadah.innerHTML = daftar.map(function(rak, i) {
+      const adaLebih = rak.total > rak.buku.length;
+      const kartu = rak.buku.map(function(b) { return renderKartuBukuOpac(b, true); }).join('');
+      return '<div class="mb-4">' +
+        '<div class="d-flex justify-content-between align-items-baseline mb-2">' +
+          '<h6 class="mb-0 opac-rak-judul">' + escapeHTML(rak.bentuk) +
+            '<span class="opac-rak-jumlah">' + rak.total + ' buku</span></h6>' +
+          (adaLebih
+            ? '<button type="button" class="btn btn-sm btn-link p-0" onclick="lihatSemuaBentukOpac(' + i + ')">Lihat semua <i class="fas fa-arrow-right"></i></button>'
+            : '') +
+        '</div>' +
+        '<div class="opac-rak-wrap">' +
+          '<button type="button" class="opac-rak-panah kiri" onclick="geserRakOpac(this, -1)" aria-label="Geser ke kiri"><i class="fas fa-chevron-left"></i></button>' +
+          '<div class="opac-rak-viewport"><div class="opac-rak-track">' + kartu + '</div></div>' +
+          '<button type="button" class="opac-rak-panah kanan" onclick="geserRakOpac(this, 1)" aria-label="Geser ke kanan"><i class="fas fa-chevron-right"></i></button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
   }
-  function saring() {
-    const kata = normal(st.q).split(' ').filter(Boolean);
-    let hasil = semua.filter((b) => (!st.ff || b.fiksi === st.ff) && (!st.ada || b.tersedia > 0) && (!st.bentuk || b.bentuk === st.bentuk));
-    if (kata.length) {
-      hasil = hasil.map((b) => [b, skor(b, kata)]).filter((x) => x[1] > 0);
-      if (st.urut === 'relevan') hasil.sort((a, b) => b[1] - a[1] || (b[0].tersedia > 0) - (a[0].tersedia > 0));
-      hasil = hasil.map((x) => x[0]);
+
+  function geserRakOpac(tombol, arah) {
+    const viewport = tombol.parentElement.querySelector('.opac-rak-viewport');
+    viewport.scrollBy({ left: arah * viewport.clientWidth * 0.8, behavior: 'smooth' });
+  }
+
+  function lihatSemuaBentukOpac(indeksRak) {
+    const rak = opacEtalaseData[indeksRak];
+    if (!rak) return;
+    renderHasilPencarianOpac(rak.semua, rak.bentuk + ' (' + rak.semua.length + ' buku)');
+    document.getElementById('opacHasilPencarian').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderKartuBukuOpac(b, lazy) {
+    const idAman = String(b.idJudul).replace(/'/g, "\\'");
+    const coverHtml = b.coverUrl
+      ? '<img src="' + escapeHTML(b.coverUrl) + '" class="opac-book-cover" alt="cover" ' + (lazy === true ? 'loading="lazy" ' : '') +
+        'onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
+        '<div class="opac-book-cover-placeholder" style="display:none;"><i class="fas fa-book fa-2x"></i></div>'
+      : '<div class="opac-book-cover-placeholder"><i class="fas fa-book fa-2x"></i></div>';
+
+    const adaEksemplar = b.totalEksemplar > 0;
+    const badgeKelas = !adaEksemplar ? 'bg-secondary' : (b.tersedia > 0 ? 'bg-success' : 'bg-danger');
+    const badgeTeks = adaEksemplar ? (b.tersedia + ' dari ' + b.totalEksemplar + ' tersedia') : 'Belum ada eksemplar';
+    const infoDipinjam = (b.jumlahDipinjam !== undefined && b.jumlahDipinjam !== null)
+      ? '<div class="small text-muted mt-1"><i class="fas fa-arrow-trend-up"></i> Dipinjam ' + b.jumlahDipinjam + 'x</div>'
+      : '';
+
+    return '<div class="opac-book-card" onclick="bukaDetailBukuOpac(\'' + idAman + '\')">' +
+      coverHtml +
+      '<div class="opac-book-title">' + escapeHTML(b.judulUtama || '') + '</div>' +
+      '<div class="opac-book-author">' + escapeHTML(b.kreatorUtama || '-') + '</div>' +
+      infoDipinjam +
+      '<span class="badge ' + badgeKelas + ' mt-1" style="font-size:0.7rem;">' + badgeTeks + '</span>' +
+    '</div>';
+  }
+
+  function initOpacCarousel(trackId, items, key) {
+    const track = document.getElementById(trackId);
+    if (opacIntervals[key]) clearInterval(opacIntervals[key]);
+    if (!items || items.length === 0) {
+      track.innerHTML = '<p class="text-muted px-2">Belum ada data untuk ditampilkan.</p>';
+      delete opacKaroselState_[key];
+      return;
     }
-    if (st.urut === 'baru' || (st.urut === 'relevan' && !kata.length)) hasil.sort((a, b) => (b.masuk || 0) - (a.masuk || 0));
-    if (st.urut === 'judul') hasil.sort((a, b) => a.judul.localeCompare(b.judul, 'id'));
-    tampil = hasil; batas = HAL; render();
-  }
-  function render() {
-    const adaCari = !!st.q.trim();
-    $('judulHasil').textContent = adaCari ? 'Hasil untuk “' + st.q.trim() + '”' : 'Semua koleksi';
-    $('ringkas').textContent = tampil.length ? tampil.length.toLocaleString('id-ID') + ' judul' + (tampil.length > batas ? ', menampilkan ' + Math.min(batas, tampil.length) : '') : '';
-    $('grid').innerHTML = tampil.length ? tampil.slice(0, batas).map(kartuHTML).join('') :
-      '<div class="kosong" style="grid-column:1/-1">Tidak ada buku yang cocok' + (adaCari ? ' dengan “' + esc(st.q.trim()) + '”' : '') +
-      '. Coba kata lain, periksa ejaan, atau hapus saringan.</div>';
-    $('lagi').hidden = tampil.length <= batas;
-    $('bagianBaru').hidden = adaCari || !$('stripBaru').children.length;
+    const dobel = items.concat(items);
+    track.innerHTML = dobel.map(function(b) { return renderKartuBukuOpac(b); }).join('');
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0px)';
+    const st = { track: track, index: 0, total: items.length };
+    opacKaroselState_[key] = st;
+    const mulaiOtomatis = function() {
+      clearInterval(opacIntervals[key]);
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      opacIntervals[key] = setInterval(function() { geserKaroselOpac(key, 1, true); }, 3500);
+    };
+    st.mulaiOtomatis = mulaiOtomatis;
+    mulaiOtomatis();
+    const wadah = track.parentElement.parentElement;
+    wadah.onmouseenter = function() { clearInterval(opacIntervals[key]); };
+    wadah.onmouseleave = mulaiOtomatis;
   }
 
-  function bukaDetail(id) {
-    const b = semua.find((x) => x.id === id);
-    if (!b) return;
-    const baris = (k, v) => v ? '<dt>' + k + '</dt><dd>' + esc(v) + '</dd>' : '';
-    const ket = b.akses === 'Baca di Tempat' ? 'Hanya dibaca di perpustakaan' :
-      (!b.total ? 'Belum ada eksemplar' : (b.tersedia > 0 ? b.tersedia + ' dari ' + b.total + ' eksemplar tersedia' : 'Semua ' + b.total + ' eksemplar sedang dipinjam'));
-    $('detailIsi').innerHTML =
-      '<div>' + sampulHTML(b) + '</div><div>' +
-      '<h2 id="dJudul">' + esc(b.judul) + '</h2>' + (b.anakJudul ? '<p class="anak">' + esc(b.anakJudul.replace(/\s*\/\s*$/, '')) + '</p>' : '') +
-      '<p class="meta">' + esc([b.pengarang, b.pengarangLain].filter(Boolean).join('; ')) + '</p>' +
-      '<p class="meta">' + esc([b.penerbit && (b.tempatTerbit ? b.tempatTerbit + ': ' : '') + b.penerbit, b.tahun, b.edisi, b.halaman].filter(Boolean).join(', ')) + '</p>' +
-      '<dl class="letak">' + baris('Ketersediaan', ket) + baris('Rak', b.rak) + baris('Nomor panggil', b.nomorPanggil) + baris('ISBN', b.isbn) + baris('Bahasa', b.bahasa) + baris('Bentuk', b.bentuk) + baris('Pembaca', b.sasaran) + '</dl>' +
-      (b.subjek && b.subjek.length ? '<div class="subjek">' + b.subjek.map((s) => '<button type="button" data-subjek="' + esc(s) + '">' + esc(s) + '</button>').join('') + '</div>' : '') +
-      (b.sinopsis ? '<p class="sinopsis">' + esc(b.sinopsis) + '</p>' : '') +
-      '<p class="meta" style="margin-top:14px">Untuk meminjam, datang ke perpustakaan dan tunjukkan nomor panggil di atas kepada petugas.</p></div>';
-    const d = $('detail');
-    if (!d.open) d.showModal();
-    history.replaceState(null, '', '#buku=' + encodeURIComponent(id));
+  function geserKaroselOpac(key, arah, otomatis) {
+    const st = opacKaroselState_[key];
+    if (!st) return;
+    const kartu = st.track.querySelector('.opac-book-card');
+    if (!kartu) return;
+    const langkah = kartu.getBoundingClientRect().width + 14;
+    const pasang = function(i, animasi) {
+      st.track.style.transition = animasi ? 'transform 0.6s ease' : 'none';
+      st.track.style.transform = 'translateX(-' + (i * langkah) + 'px)';
+    };
+    if (arah < 0 && st.index <= 0) {
+      st.index = st.total;
+      pasang(st.index, false);
+      void st.track.offsetWidth;
+    }
+    st.index += arah < 0 ? -1 : 1;
+    pasang(st.index, true);
+    if (st.index >= st.total) {
+      setTimeout(function() {
+        if (st.index >= st.total) { st.index -= st.total; pasang(st.index, false); }
+      }, 620);
+    }
+    if (!otomatis && st.mulaiOtomatis && !st.track.parentElement.parentElement.matches(':hover')) st.mulaiOtomatis();
   }
-  function tutupDetail() { const d = $('detail'); if (d.open) d.close(); }
 
-  function cari(q) { st.q = q; $('q').value = q; history.replaceState(null, '', q ? '#cari=' + encodeURIComponent(q) : location.pathname); saring(); }
+  function renderHasilPencarianOpac(list, judul) {
+    document.getElementById('opacBeranda').style.display = 'none';
+    document.getElementById('opacHasilPencarian').style.display = 'block';
+    document.getElementById('opacHasilJudul').textContent = judul || 'Hasil Pencarian';
+    const grid = document.getElementById('opacHasilGrid');
+    grid.innerHTML = '';
+    document.getElementById('opacHasilKosong').style.display = list.length === 0 ? 'block' : 'none';
+    list.forEach(function(b) {
+      const col = document.createElement('div');
+      col.className = 'col-6 col-md-3 col-lg-2';
+      col.innerHTML = renderKartuBukuOpac(b, true);
+      grid.appendChild(col);
+    });
+  }
 
-  function waktuRelatif(iso) {
-    const t = new Date(iso); if (isNaN(t)) return '-';
+  function cariBukuOpac() {
+    const keyword = document.getElementById('opacSearchInput').value.trim();
+    if (!keyword) { showNotification('Ketik kata kunci pencarian dulu', 'warning'); return; }
+    if (!opacIndeks) { showNotification('Katalog masih dimuat, coba sebentar lagi.', 'warning'); return; }
+    const kw = keyword.toLowerCase();
+    renderHasilPencarianOpac(opacIndeks.filter(function(b) { return b._cari.indexOf(kw) > -1; }).map(function(b) { return kartuDariBuku_(b); }));
+    history.replaceState(null, '', '#cari=' + encodeURIComponent(keyword));
+  }
+
+  function tutupHasilPencarianOpac() {
+    document.getElementById('opacHasilPencarian').style.display = 'none';
+    document.getElementById('opacBeranda').style.display = 'block';
+    document.getElementById('opacSearchInput').value = '';
+    history.replaceState(null, '', location.pathname);
+  }
+
+  function bukaDetailBukuOpac(idJudul) {
+    const info = opacPeta[idJudul];
+    if (!info) { showNotification('Buku tidak ditemukan', 'warning'); return; }
+
+    const coverHtml = info.cover
+      ? '<img src="' + escapeHTML(info.cover) + '" style="width:140px;height:auto;max-height:210px;object-fit:contain;align-self:flex-start;border-radius:8px;flex-shrink:0;" alt="cover" onerror="this.outerHTML=\'<div class=&quot;opac-book-cover-placeholder&quot; style=&quot;width:140px;height:196px;flex-shrink:0;&quot;><i class=&quot;fas fa-book fa-3x&quot;></i></div>\'">'
+      : '<div class="opac-book-cover-placeholder" style="width:140px;height:196px;flex-shrink:0;align-self:flex-start;"><i class="fas fa-book fa-3x"></i></div>';
+
+    // Lokasi: "4B" -> "Rak 4, Baris B (Ruang ...)" (sama dengan aplikasi)
+    const ruangPerpus = String(info.lokasiRuang || '').trim() || 'Perpustakaan';
+    const jelaskanRak = function(kode) {
+      const k = String(kode || '').trim();
+      const m = k.match(/^(\d+)\s*([A-Za-z])$/);
+      if (m) return 'Rak ' + m[1] + ', Baris ' + m[2].toUpperCase() + ' (' + ruangPerpus + ')';
+      if (/pojok\s*baca/i.test(k)) return k + ' (baca di kelas)';
+      return k;
+    };
+    const eks = info.eksemplar || [];
+    const daftarRakEks = [];
+    eks.forEach(function(e) { const r = String(e[2] || '').trim(); if (r && daftarRakEks.indexOf(r) < 0) daftarRakEks.push(r); });
+    const rakJudul = String(info.rak || '').trim();
+    const daftarLokasi = daftarRakEks.length > 0 ? daftarRakEks.map(jelaskanRak) : [rakJudul ? jelaskanRak(rakJudul) : '-'];
+    const lokasiHtml = daftarLokasi.map(function(t) {
+      return '<span class="badge bg-primary me-1 mb-1" style="font-size:0.85rem; white-space:normal; text-align:left;"><i class="fas fa-location-dot"></i> ' + escapeHTML(t) + '</span>';
+    }).join('');
+    const rakBeragam = daftarRakEks.length > 1;
+
+    const eksemplarHtml = eks.length > 0
+      ? eks.map(function(e, idx) {
+          let badge;
+          if (e[0] === 'Tersedia') {
+            badge = '<span class="badge bg-success">Tersedia</span>';
+          } else {
+            const tglStr = e[1]
+              ? (' - kembali sekitar ' + new Date(e[1] + 'T00:00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }))
+              : '';
+            badge = '<span class="badge bg-danger">' + escapeHTML(e[0] || 'Dipinjam') + tglStr + '</span>';
+          }
+          const rakEks = (rakBeragam && e[2]) ? (' <span class="text-muted small"><i class="fas fa-location-dot"></i> ' + escapeHTML(e[2]) + '</span>') : '';
+          return '<div class="mb-1">Eksemplar ' + (idx + 1) + ': ' + badge + rakEks + '</div>';
+        }).join('')
+      : '<p class="text-muted">Belum ada eksemplar untuk buku ini.</p>';
+
+    opacDetailAktif = info;
+    document.getElementById('opacDetailBody').innerHTML =
+      '<div class="d-flex gap-3 mb-3 align-items-start">' + coverHtml +
+        '<div style="flex:1;min-width:0;">' +
+          '<h5 class="mb-1">' + escapeHTML(info.judul) + '</h5>' +
+          (info.anakJudul ? ('<p class="text-muted mb-2">' + escapeHTML(info.anakJudul) + '</p>') : '') +
+          '<p class="mb-1"><strong>Pengarang:</strong> ' + escapeHTML(info.pengarang || '-') + '</p>' +
+          '<p class="mb-1"><strong>Penerbit:</strong> ' + escapeHTML(info.penerbit || '-') + (info.tahun ? (' (' + escapeHTML(String(info.tahun)) + ')') : '') + '</p>' +
+          '<p class="mb-1"><strong>Nomor Panggil:</strong> ' + escapeHTML(info.nomorPanggil || '-') + '</p>' +
+          '<p class="mb-1"><strong>Lokasi Buku:</strong> ' + lokasiHtml + '</p>' +
+          '<p class="mb-1"><strong>Pemanfaatan:</strong> ' +
+            '<span class="badge bg-info text-dark me-1"><i class="fas fa-glasses"></i> Dibaca di tempat ' + (info.dibaca || 0) + ' kali</span>' +
+            '<span class="badge bg-warning text-dark"><i class="fas fa-book-open"></i> Dipinjam ' + (info.dipinjam || 0) + ' kali</span>' +
+            '<span class="text-muted small ms-1">(semua eksemplar)</span></p>' +
+          (info.bahasa ? ('<p class="mb-1"><strong>Bahasa:</strong> ' + escapeHTML(info.bahasa) + '</p>') : '') +
+        '</div>' +
+      '</div>' +
+      (info.subjekTopikal ? ('<p><strong>Subjek:</strong> ' + escapeHTML(info.subjekTopikal) + '</p>') : '') +
+      (info.sinopsis ? ('<div class="mb-3"><strong>Catatan:</strong><div style="max-height:180px;overflow-y:auto;white-space:pre-line;padding:6px 10px;border:1px solid #e3dccf;border-radius:6px;background:#fbf8f2;margin-top:4px;">' + escapeHTML(info.sinopsis) + '</div></div>') : '') +
+      '<hr>' +
+      '<h6>Status Eksemplar</h6>' +
+      eksemplarHtml +
+      '<p class="small text-muted mt-3 mb-0"><i class="fas fa-circle-info"></i> Untuk meminjam atau mengantre buku ini, silakan datang ke perpustakaan dan sebutkan nomor panggilnya kepada petugas.</p>';
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('opacDetailModal')).show();
+  }
+
+  function waktuRelatif_(iso) {
+    const t = new Date(iso);
+    if (isNaN(t)) return '-';
     const m = Math.round((Date.now() - t) / 60000);
     if (m < 2) return 'baru saja';
     if (m < 60) return m + ' menit lalu';
@@ -290,71 +1972,51 @@
     return t.toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
-  function mulai(j) {
-    data = j;
-    const p = j.perpustakaan || {};
-    if (p.nama) { $('namaPerpus').textContent = p.nama; $('fNama').textContent = p.nama; document.title = 'Katalog ' + p.nama; }
-    if (p.sekolah) $('namaSekolah').textContent = 'Katalog daring ' + p.sekolah;
-    if (p.logo) { $('logo').src = p.logo; $('logo').hidden = false; $('logo').onerror = () => { $('logo').hidden = true; }; }
-    $('fAlamat').textContent = p.alamat || '';
-    $('fLayanan').innerHTML = [p.jam ? 'Jam layanan: ' + esc(p.jam) : '', p.lokasi ? 'Lokasi: ' + esc(p.lokasi) : ''].filter(Boolean).join('<br>');
-    $('fDiperbarui').textContent = waktuRelatif(j.diperbarui);
+  // ---------- Muat data ----------
+  (function mulai() {
+    const ambil = function(f) {
+      return fetch('data/' + f + '?v=' + Date.now(), { cache: 'no-store' }).then(function(r) {
+        if (!r.ok) throw new Error(f + ' ' + r.status);
+        return r.json();
+      });
+    };
+    Promise.all([ambil('katalog.json'), ambil('status.json').catch(function() { return null; })])
+      .then(function(hasil) {
+        const k = hasil[0], s = hasil[1] || {};
+        const sS = s.s || {}, sE = s.e || {}, sP = s.p || {};
+        const p = k.perpustakaan || {};
+        if (p.logo) {
+          const img = document.getElementById('logoPerpus');
+          img.src = p.logo; img.style.display = '';
+          img.onerror = function() { img.style.display = 'none'; document.getElementById('ikonPerpus').style.display = ''; };
+          document.getElementById('ikonPerpus').style.display = 'none';
+        }
+        document.getElementById('infoLayanan').innerHTML = [
+          p.jam ? '<i class="fas fa-clock"></i> ' + escapeHTML(p.jam) : '',
+          p.lokasi ? '<i class="fas fa-location-dot"></i> ' + escapeHTML(p.lokasi) : '',
+          s.diperbarui ? '<i class="fas fa-rotate"></i> Ketersediaan diperbarui ' + escapeHTML(waktuRelatif_(s.diperbarui)) : ''
+        ].filter(Boolean).join('<span class="mx-2">·</span>');
 
-    semua = (j.buku || []).map((b) => Object.assign(b, {
-      _j: normal(b.judul + ' ' + (b.anakJudul || '')), _p: normal((b.pengarang || '') + ' ' + (b.pengarangLain || '')),
-      _s: normal((b.subjek || []).join(' ')), _x: normal([b.penerbit, b.isbn, b.nomorPanggil, b.bentuk, b.tahun].join(' '))
-    }));
+        const daftar = (k.buku || []).map(function(b) {
+          const x = sS[b.id] || [0, 0], pp = sP[b.id] || [0, 0];
+          b.total = x[0]; b.tersedia = x[1];
+          b.eksemplar = sE[b.id] || [];
+          b.dipinjam = pp[0]; b.dibaca = pp[1];
+          b._cari = [b.judul, b.anakJudul, b.pengarang, b.subjekTopikal].join(' ').toLowerCase();
+          opacPeta[b.id] = b;
+          return b;
+        });
+        opacIndeks = daftar.reverse(); // terbaru dulu (urutan baris sheet)
+        loadOpacBeranda();
+        const h = new URLSearchParams(location.hash.slice(1));
+        if (h.get('cari')) { document.getElementById('opacSearchInput').value = h.get('cari'); cariBukuOpac(); }
+      })
+      .catch(function() {
+        document.getElementById('opacEtalaseIsi').innerHTML = '<p class="text-muted small">Katalog belum bisa dimuat. Periksa sambungan internet, lalu muat ulang halaman ini.</p>';
+        ['trackOpacTerpopuler', 'trackOpacTerbaru'].forEach(function(id) { document.getElementById(id).innerHTML = ''; });
+      });
+  })();
 
-    const bentuk = [...new Set(semua.map((b) => b.bentuk).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'id'));
-    $('bentuk').innerHTML = '<option value="">Semua</option>' + bentuk.map((x) => '<option>' + esc(x) + '</option>').join('');
-
-    const batasBaru = Date.now() - 30 * 86400000;
-    const baru = semua.filter((b) => b.masuk && b.masuk >= batasBaru).sort((a, b) => b.masuk - a.masuk).slice(0, 12);
-    $('stripBaru').innerHTML = baru.map(kartuHTML).join('');
-
-    // Saran pencarian dari subjek terbanyak
-    const hit = {};
-    semua.forEach((b) => (b.subjek || []).forEach((s) => { hit[s] = (hit[s] || 0) + 1; }));
-    const top = Object.keys(hit).sort((a, b) => hit[b] - hit[a]).slice(0, 6);
-    if (top.length) { $('saran').innerHTML = 'Topik populer: ' + top.map((s) => '<button type="button" data-cari="' + esc(s) + '">' + esc(s) + '</button>').join(''); $('saran').hidden = false; }
-
-    $('memuat').hidden = true; $('bagianHasil').hidden = false;
-    const h = new URLSearchParams(location.hash.slice(1));
-    if (h.get('cari')) cari(h.get('cari')); else saring();
-    if (h.get('buku')) bukaDetail(h.get('buku'));
-  }
-
-  // Peristiwa
-  $('formCari').addEventListener('submit', (e) => { e.preventDefault(); cari($('q').value.trim()); $('bagianHasil').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
-  let tunda; $('q').addEventListener('input', () => { clearTimeout(tunda); tunda = setTimeout(() => cari($('q').value.trim()), 250); });
-  document.querySelectorAll('[data-ff]').forEach((b) => b.addEventListener('click', () => {
-    document.querySelectorAll('[data-ff]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    st.ff = b.dataset.ff; saring();
-  }));
-  $('hanyaAda').addEventListener('change', (e) => { st.ada = e.target.checked; saring(); });
-  $('bentuk').addEventListener('change', (e) => { st.bentuk = e.target.value; saring(); });
-  $('urut').addEventListener('change', (e) => { st.urut = e.target.value; saring(); });
-  $('lagi').addEventListener('click', () => { batas += HAL; render(); });
-  document.addEventListener('click', (e) => {
-    const k = e.target.closest('.buku'); if (k) { bukaDetail(k.dataset.id); return; }
-    const s = e.target.closest('[data-subjek]'); if (s) { tutupDetail(); cari(s.dataset.subjek); return; }
-    const c = e.target.closest('[data-cari]'); if (c) { cari(c.dataset.cari); $('bagianHasil').scrollIntoView({ behavior: 'smooth' }); }
-  });
-  $('tutup').addEventListener('click', tutupDetail);
-  $('detail').addEventListener('click', (e) => { if (e.target === $('detail')) tutupDetail(); });
-  $('detail').addEventListener('close', () => { history.replaceState(null, '', st.q ? '#cari=' + encodeURIComponent(st.q) : location.pathname); });
-
-  // katalog.json = data buku (jarang berubah); status.json = jumlah eksemplar tersedia (diperbarui berkala)
-  const ambil = (f) => fetch('data/' + f + '?v=' + Date.now(), { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(f + ' ' + r.status); return r.json(); });
-  Promise.all([ambil('katalog.json'), ambil('status.json').catch(() => null)])
-    .then(([k, s]) => {
-      const peta = (s && s.s) || {};
-      (k.buku || []).forEach((b) => { const x = peta[b.id] || [b.total || 0, b.tersedia || 0]; b.total = x[0]; b.tersedia = x[1]; });
-      if (s && s.diperbarui) k.diperbarui = s.diperbarui;
-      mulai(k);
-    })
-    .catch(() => { $('memuat').textContent = 'Katalog belum bisa dimuat. Periksa sambungan internet, lalu muat ulang halaman ini.'; });
-})();
-</script>
+  </script>
 </body>
 </html>
