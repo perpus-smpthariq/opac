@@ -1916,6 +1916,14 @@
     history.replaceState(null, '', location.pathname);
   }
 
+  // "365 halaman ;" -> "365 halaman", "200" -> "200 halaman", "-" / kosong -> ''
+  function teksHalamanBuku_(v) {
+    let t = String(v === null || v === undefined ? '' : v).trim().replace(/[\s;:,.\/]+$/, '').trim();
+    if (!t || t === '-') return '';
+    if (/^\d+$/.test(t)) t += ' halaman';
+    return t;
+  }
+
   function bukaDetailBukuOpac(idJudul) {
     const info = opacPeta[idJudul];
     if (!info) { showNotification('Buku tidak ditemukan', 'warning'); return; }
@@ -1967,6 +1975,7 @@
           (info.anakJudul ? ('<p class="text-muted mb-2">' + escapeHTML(info.anakJudul) + '</p>') : '') +
           '<p class="mb-1"><strong>Pengarang:</strong> ' + escapeHTML(info.pengarang || '-') + '</p>' +
           '<p class="mb-1"><strong>Penerbit:</strong> ' + escapeHTML(info.penerbit || '-') + (info.tahun ? (' (' + escapeHTML(String(info.tahun)) + ')') : '') + '</p>' +
+          (teksHalamanBuku_(info.halaman) ? ('<p class="mb-1"><strong>Jumlah Halaman:</strong> ' + escapeHTML(teksHalamanBuku_(info.halaman)) + '</p>') : '') +
           '<p class="mb-1"><strong>Nomor Panggil:</strong> ' + escapeHTML(info.nomorPanggil || '-') + '</p>' +
           '<p class="mb-1"><strong>Lokasi Buku:</strong> ' + lokasiHtml + '</p>' +
           '<p class="mb-1"><strong>Pemanfaatan:</strong> ' +
